@@ -23,7 +23,7 @@
 
   <script>
     const heartImg = new Image();
-    heartImg.src = "heart.png";
+    heartImg.src = "heart.jpeg";
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
