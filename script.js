@@ -22,20 +22,17 @@
   <canvas id="gameCanvas"></canvas>
 
   <script>
+    // 이미지 로드
+    const basketImg = new Image();
+    basketImg.src = "basket.jpeg"; // 바구니 이미지 파일이 이 이름이어야 함 (같은 폴더에 있어야 함)
+
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // 이미지 로드
-    const heartImg = new Image();
-    heartImg.src = "heart.jpeg";
-
-    const basketImg = new Image();
-    basketImg.src = "basket.png";
-
-    // 플레이어 바 (캐쳐)
+    // 플레이어 바 (이미지로 바뀜)
     const catcher = {
       width: 100,
       height: 60,
@@ -43,6 +40,7 @@
       y: canvas.height - 80
     };
 
+    // 떨어지는 공들
     const hearts = [];
     const heartSize = 30;
     let score = 0;
@@ -57,8 +55,17 @@
     }
 
     function drawHearts() {
+      ctx.fillStyle = "red";
       hearts.forEach((heart) => {
-        ctx.drawImage(heartImg, heart.x, heart.y, heartSize, heartSize);
+        ctx.beginPath();
+        ctx.arc(
+          heart.x + heartSize / 2,
+          heart.y + heartSize / 2,
+          heartSize / 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
       });
     }
 
@@ -76,9 +83,10 @@
           score++;
         }
 
-        // 바닥에 떨어졌을 때
+        // 바닥까지 떨어진 경우 제거
         if (heart.y > canvas.height) {
           hearts.splice(index, 1);
+          score--; // 점수 감소
         }
       });
     }
@@ -107,12 +115,7 @@
     // 하트 생성 주기
     setInterval(createHeart, 1000);
 
-    // 이미지가 다 로드된 후에 게임 시작
-    basketImg.onload = () => {
-      heartImg.onload = () => {
-        gameLoop();
-      };
-    };
+    gameLoop();
   </script>
 </body>
 </html>
