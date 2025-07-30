@@ -22,25 +22,27 @@
   <canvas id="gameCanvas"></canvas>
 
   <script>
-    const heartImg = new Image();
-    heartImg.src = "heart.jpeg";
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
-    // 캔버스 크기 설정
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // 플레이어 바
+    // 이미지 로드
+    const heartImg = new Image();
+    heartImg.src = "heart.jpeg";
+
+    const basketImg = new Image();
+    basketImg.src = "basket.png";
+
+    // 플레이어 바 (캐쳐)
     const catcher = {
-      width: 80,
-      height: 20,
-      x: canvas.width / 2 - 40,
-      y: canvas.height - 40,
-      color: "hotpink"
+      width: 100,
+      height: 60,
+      x: canvas.width / 2 - 50,
+      y: canvas.height - 80
     };
 
-    // 하트들
     const hearts = [];
     const heartSize = 30;
     let score = 0;
@@ -51,16 +53,14 @@
     }
 
     function drawCatcher() {
-      ctx.fillStyle = catcher.color;
-      ctx.fillRect(catcher.x, catcher.y, catcher.width, catcher.height);
+      ctx.drawImage(basketImg, catcher.x, catcher.y, catcher.width, catcher.height);
     }
 
     function drawHearts() {
-  hearts.forEach((heart) => {
-    ctx.drawImage(heartImg, heart.x, heart.y, heartSize, heartSize);
-  });
-}
-
+      hearts.forEach((heart) => {
+        ctx.drawImage(heartImg, heart.x, heart.y, heartSize, heartSize);
+      });
+    }
 
     function moveHearts() {
       hearts.forEach((heart, index) => {
@@ -76,7 +76,7 @@
           score++;
         }
 
-        // 화면 밖으로 나간 하트 제거
+        // 바닥에 떨어졌을 때
         if (heart.y > canvas.height) {
           hearts.splice(index, 1);
         }
@@ -104,10 +104,15 @@
       catcher.x = touchX - catcher.width / 2;
     });
 
-    // 일정 시간마다 하트 생성
+    // 하트 생성 주기
     setInterval(createHeart, 1000);
 
-    gameLoop();
+    // 이미지가 다 로드된 후에 게임 시작
+    basketImg.onload = () => {
+      heartImg.onload = () => {
+        gameLoop();
+      };
+    };
   </script>
 </body>
 </html>
