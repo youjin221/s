@@ -22,6 +22,8 @@
   <canvas id="gameCanvas"></canvas>
 
   <script>
+    const heartImg = new Image();
+    heartImg.src = "heart.png";
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
