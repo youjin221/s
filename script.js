@@ -56,13 +56,11 @@
     }
 
     function drawHearts() {
-      ctx.fillStyle = "red";
-      hearts.forEach((heart) => {
-        ctx.beginPath();
-        ctx.arc(heart.x + heartSize / 2, heart.y + heartSize / 2, heartSize / 2, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
+  hearts.forEach((heart) => {
+    ctx.drawImage(heartImg, heart.x, heart.y, heartSize, heartSize);
+  });
+}
+
 
     function moveHearts() {
       hearts.forEach((heart, index) => {
